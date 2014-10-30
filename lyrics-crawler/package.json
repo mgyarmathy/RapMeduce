@@ -1,0 +1,17 @@
+{
+  "name": "lyrics-crawler",
+  "version": "1.0.0",
+  "description": "songlyrics.com crawler",
+  "main": "lyrics-crawler.js",
+  "dependencies": {
+    "collections": "^1.2.1",
+    "crawler": "^0.3.1",
+    "jsdom": "^1.1.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
