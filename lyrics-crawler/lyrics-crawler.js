@@ -19,17 +19,21 @@ var c = new Crawler({
 		var formatted_lines = [];
 		for (var i = 0; i<lines.length; i++) {
 			lines[i] = lines[i].replace('\r', '');
-			if (lines[i].length > 0 && lines[i].charAt(0) != '[') {
-				formatted_lines.push(new Lyric(artist, song, lines[i]));
+			// filter out a lot of junk lines
+			if (lines[i].length > 0 && 
+				lines[i].split(' ').length > 1 &&
+				lines[i].split(' ')[0].toLowerCase() != "verse" && 
+				lines[i].charAt(0) != '[') {
+				formatted_lines.push(lines[i]);
 			}
 		}
 		var s = new Set(formatted_lines);
 		s.forEach(function(lyric){
-			console.log(JSON.stringify(lyric));
+			console.log(JSON.stringify(new Lyric(artist, song, lyric)));
 		});
 	} else if ($('.tracklist').length){
 		$($('.tracklist').get(0)).find('td a').each(function() {
-			console.log('adding to queue: '+$(this).attr('href'));
+			//console.log('adding to queue: '+$(this).attr('href'));
 			c.queue($(this).attr('href'));
 		});
 	}
@@ -40,6 +44,6 @@ var c = new Crawler({
 // Queue just artist URLS from -- http://en.wikipedia.org/wiki/List_of_hip_hop_musicians
 lineReader.eachLine('../data/rap-artists-test.txt', function(line, last) {
 	var artistUrl = 'http://www.songlyrics.com/'+line.toLowerCase().split(' ').join('-')+'-lyrics/';
-	console.log(artistUrl);
+	//console.log(artistUrl);
 	c.queue({uri: artistUrl, priority: 6});
 });
