@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Rap Meduce</title>
+    <style>
+        input {
+            display:block;
+            width:80%;
+            font-size: 24px;
+            border: none;
+        }
+        #generate {
+            padding: 20px;
+            font-size: 24px;
+        }
+    </style>
+    
+</head>
+<body>
+    <!-- might use this in the future: http://knockoutjs.com/documentation/hasfocus-binding.html -->
+    <h1>RapMeduce</h1>
+    <div data-bind="foreach: lines">
+        <input data-bind="value: line, 
+        hasFocus: $index() == $root.activeLine(),
+        event: {
+            keypress: function(data, event) { 
+                if (event.keyCode == 13) {
+                    $root.newLine($index(), data,event);
+                } else {
+                    return true; 
+                }
+            }
+        },
+        click: function(data, event) {
+            $root.changeActiveLine($index(), data, event);
+        }
+        "/>
+        <div class="action-button-container" data-bind="visible: $index() == $root.activeLine()">
+            <button data-bind="click: function(data, event) {
+                $root.generateLine($index(), data, event);
+            }">Generate Line</button>
+            <button data-bind="visible: $root.lines().length > 1,
+            click: function(data, event) {
+                $root.deleteLine($index(), data, event);
+            }">Delete Line</button>
+        </div>
+    </div>
+
+    <h3>Knockout ViewModel</h3>
+    <pre data-bind="text: ko.toJSON($data, null, 2)"></pre>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/knockout/3.2.0/knockout-min.js"></script>
+    <script src="js/app.js"></script>
+    
+</body>
+</html>

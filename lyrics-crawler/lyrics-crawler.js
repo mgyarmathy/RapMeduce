@@ -9,6 +9,7 @@ function Lyric(artist, song, line) {
 }
 
 var c = new Crawler({
+"maxConnections":50,
 
 'callback': function(error, result, $) {
 	if ($('#songLyricsDiv').length) {
@@ -42,7 +43,7 @@ var c = new Crawler({
 });
 
 // Queue just artist URLS from -- http://en.wikipedia.org/wiki/List_of_hip_hop_musicians
-lineReader.eachLine('../data/rap-artists-test.txt', function(line, last) {
+lineReader.eachLine('../data/rap-artists.txt', function(line, last) {
 	var artistUrl = 'http://www.songlyrics.com/'+line.toLowerCase().split(' ').join('-')+'-lyrics/';
 	//console.log(artistUrl);
 	c.queue({uri: artistUrl, priority: 6});
