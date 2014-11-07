@@ -33,6 +33,9 @@ function AppViewModel() {
 
     self.deleteLine = function(index, data, event) {
         self.lines.splice(index, 1);
+        if (self.activeLine() >= self.lines().length) {
+            self.changeActiveLine(self.lines().length - 1);
+        }
     }
 };
 
