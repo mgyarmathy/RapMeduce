@@ -55,8 +55,10 @@ function AppViewModel() {
     self.activeLine = ko.observable(0);
 
     self.newLine = function(index, data, event) {
-        self.lines.splice(index+1, 0, new Lyric('','',''));
-        self.changeActiveLine(index+1, data, event);
+        if (event.target.value.length > 0) {
+            self.lines.splice(index+1, 0, new Lyric('','',''));
+            self.changeActiveLine(index+1, data, event);
+        }
     };
 
     self.changeActiveLine = function(index, data, event) {
