@@ -12,26 +12,26 @@ var Lyric = function(artist, song, line) {
     ]);
 
     self.alternateLineUp = function(data, event) {
-        event.target.classList.remove('animated', 'fadeInUp', 'fadeInDown');
+        $(event.target).removeClass('animated fadeInUp fadeInDown');
         setTimeout(function() {
             self.alternateLines().push({artist: self.artist(), song: self.song(), line: self.line()})
             var lyric = self.alternateLines().shift();
             self.artist(lyric.artist);
             self.song(lyric.song);
             self.line(lyric.line);
-            event.target.classList.add('animated', 'fadeInUp');
+            $(event.target).addClass('animated fadeInUp');
         },10);
     };
 
     self.alternateLineDown = function(data, event) {
-        event.target.classList.remove('animated', 'fadeInUp', 'fadeInDown');
+        $(event.target).removeClass('animated fadeInUp fadeInDown');
         setTimeout(function() {
             self.alternateLines().unshift({artist: self.artist(), song: self.song(), line: self.line()});
             var lyric = self.alternateLines().pop();
             self.artist(lyric.artist);
             self.song(lyric.song);
             self.line(lyric.line);
-            event.target.classList.add('animated', 'fadeInDown');
+            $(event.target).addClass('animated fadeInDown');
         },10);
     };
 }
@@ -39,11 +39,17 @@ var Lyric = function(artist, song, line) {
 function AppViewModel() {
     var self = this;
 
+    self.songName = ko.observable('[Song Name]');
+    self.songArtist = ko.observable('[Song Artist]');
+
+    self.songNameEditable = ko.observable(false);
+    self.songArtistEditable = ko.observable(false);
+
     self.lines = ko.observableArray([
-        new Lyric('Kanye West', 'Power', 'I\'m Livin in that 21st Century, doing something mean to it'),
+        new Lyric('', '', 'I\'m Livin in that 21st Century, doing something mean to it'),
         new Lyric('Kanye West', 'Power', 'Do it better than anybody you ever seen do it'),
         new Lyric('Kanye West', 'Power', 'Screams from the haters, got a nice ring to it'),
-        new Lyric('Kanye West', 'Power', 'I guess every superhero need his theme music')
+        new Lyric('', '', 'I guess every superhero need his theme music')
     ]);
 
     self.activeLine = ko.observable(0);
@@ -54,6 +60,7 @@ function AppViewModel() {
     };
 
     self.changeActiveLine = function(index, data, event) {
+        $('.animated').removeClass('animated fadeInDown fadeInUp');
         self.activeLine(index);
     };
 

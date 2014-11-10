@@ -2,58 +2,72 @@
 <html>
 <head>
     <title>Rap Meduce</title>
-    <style>
-        input {
-            display:block;
-            width:80%;
-            font-size: 24px;
-            border: none;
-        }
-        #generate {
-            padding: 20px;
-            font-size: 24px;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
     <link rel="stylesheet" type="text/css" href="css/animate.min.css">
 </head>
 <body>
+    <h3 style="text-align: center; margin-bottom: 45px; border-bottom: 1px solid #ccc; padding-bottom: 20px">RapMeduce</h3>
+    <div class="wrapper">
     <!-- might use this in the future: http://knockoutjs.com/documentation/hasfocus-binding.html -->
-    <h1>RapMeduce</h1>
-    <div data-bind="foreach: lines">
-        <input data-bind="value: line, 
-        hasFocus: $index() == $root.activeLine(),
-        event: {
-            keydown: function(data, event) { 
-                if (event.keyCode == 13) {
-                    $root.newLine($index(), data,event);
-                } else if (event.keyCode == 38) {
-                    //up arrow pressed
-                    alternateLineUp(data, event);
-                } else if (event.keyCode == 40) {
-                    //down arrow pressed
-                    alternateLineDown(data, event);
-                } else {
-                    return true; 
-                }
-            }
-        },
-        click: function(data, event) {
-            $root.changeActiveLine($index(), data, event);
-        }
-        "/>
-        <div class="action-button-container" data-bind="visible: $index() == $root.activeLine()">
-            <button data-bind="click: function(data, event) {
-                $root.generateLine($index(), data, event);
-            }">Generate Line</button>
-            <button data-bind="visible: $root.lines().length > 1,
+    
+    <h2 class="song-heading">
+        <span data-bind="text: songName(), visible: !songNameEditable(), click: function(data,event) { songNameEditable(true); }"></span>
+        <input type="text" data-bind="value: songName(), visible: songNameEditable(), hasFocus: songNameEditable(), event: {
+        blur: function(data,event) { songName(event.target.value); songNameEditable(false); } }"/>
+        <span style="font-size: 14px; margin: 0 5px;">by</span>
+        <span data-bind="text: songArtist(), visible: !songArtistEditable(), click: function(data,event) { songArtistEditable(true); }"></span>
+        <input type="text" data-bind="value: songArtist(), visible: songArtistEditable(), hasFocus: songArtistEditable(), event: {
+        blur: function(data,event) { songArtist(event.target.value); songArtistEditable(false); } }"/>
+    </h2>
+    <div class="lines-container" data-bind="foreach: lines">
+        <div class="line">
+            <p data-bind="text: line,
+            visible: $index() != $root.activeLine(),
             click: function(data, event) {
-                $root.deleteLine($index(), data, event);
-            }">Delete Line</button>
+                $root.changeActiveLine($index(), data, event);
+            }"></p>
+            <input data-bind="value: line, 
+            visible: $index() == $root.activeLine(),
+            hasFocus: $index() == $root.activeLine(),
+            event: {
+                keydown: function(data, event) { 
+                    if (event.keyCode == 13) {
+                        $root.newLine($index(), data,event);
+                    } else if (event.keyCode == 38) {
+                        //up arrow pressed
+                        alternateLineUp(data, event);
+                    } else if (event.keyCode == 40) {
+                        //down arrow pressed
+                        alternateLineDown(data, event);
+                    } else {
+                        return true; 
+                    }
+                }
+            },
+            click: function(data, event) {
+                $root.changeActiveLine($index(), data, event);
+            }
+            "/>
+            <div class="action-button-container" data-bind="visible: $index() == $root.activeLine()">
+                <button class="generate-line-button" data-bind="click: function(data, event) {
+                    $root.generateLine($index(), data, event);
+                }"><span class="entypo-database"></span></button>
+                <button class="delete-line-button"  data-bind="visible: $root.lines().length > 1,
+                click: function(data, event) {
+                    $root.deleteLine($index(), data, event);
+                }"><span class="entypo-erase"></span></button>
+            </div>
+            <span xdata-bind="visible: artist(), text: 'inspired by: ' + artist() + ' - ' + song()"></span>
         </div>
     </div>
+    <hr/>
+    <div class="stats-container">
+        <h3>Stats:</h3>
+    </div>
+</div>
 
-    <h3>Knockout ViewModel</h3>
-    <pre data-bind="text: ko.toJSON($data, null, 2)"></pre>
+    <!-- <h3>Knockout ViewModel</h3>
+    <pre data-bind="text: ko.toJSON($data, null, 2)"></pre> -->
 
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/knockout/3.2.0/knockout-min.js"></script>

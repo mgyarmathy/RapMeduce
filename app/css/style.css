@@ -1,0 +1,104 @@
+@import url(http://fonts.googleapis.com/css?family=Nixie+One|Lato);
+@import url(http://weloveiconfonts.com/api/?family=entypo);
+
+/* entypo */
+[class*="entypo-"]:before {
+  font-family: 'entypo', sans-serif;
+  color: white;
+  font-size: 16px;
+}
+
+body {
+  margin: 0;
+}
+
+body, input {
+  font-family: 'Lato', sans-serif;
+  color: #222;
+}
+
+input {
+  display: inline-block;
+  border: none;
+}
+
+input:focus {
+  border: none;
+  outline: 0;
+}
+
+button {
+  border: none;
+  padding: 0;
+  height: 20px;
+  width: 30px;
+  vertical-align: middle;
+  cursor: pointer;
+}
+
+.song-heading input {
+  font-family: 'Nixie One', cursive;
+  font-size: 24px;
+}
+
+.line input {
+  width: 60%;
+  font-size: 18px;
+  line-height: 150%;
+}
+
+.line p {
+  width: 60%;
+  text-indent: -2em;
+  padding-left: 2em;
+}
+
+
+/*http://www.colourlovers.com/palette/254301/[Chic]_-_Mellow*/
+.generate-line-button {
+  background-color: #539856;
+  xbackground-color: #222;
+}
+
+.delete-line-button {
+  background-color: #F24E4E;
+  height: 20px;
+}
+
+h1,h2,h3 {
+  font-family: 'Nixie One', cursive;
+}
+
+h1 {
+  font-size: 36px;
+}
+
+h2 {
+  font-size: 24px;
+}
+
+h3 {
+  font-size: 20px;
+}
+
+hr {
+  width: 40%;
+  margin: 25px auto;
+  border: 0;
+  background-color: #ccc;
+  height: 1px;
+}
+
+.wrapper {
+  margin: 0 auto;
+  max-width: 800px;
+}
+
+.lines-container, .annotation-container {
+  vertical-align: top;
+}
+
+.action-button-container {
+  display: inline-block;
+  margin-left: 10px;
+}
