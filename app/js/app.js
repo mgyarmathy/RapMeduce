@@ -47,9 +47,9 @@ function AppViewModel() {
 
     self.lines = ko.observableArray([
         new Lyric('', '', 'I\'m Livin in that 21st Century, doing something mean to it'),
-        new Lyric('Kanye West', 'Power', 'Do it better than anybody you ever seen do it'),
-        new Lyric('Kanye West', 'Power', 'Screams from the haters, got a nice ring to it'),
-        new Lyric('', '', 'I guess every superhero need his theme music')
+        //new Lyric('Kanye West', 'Power', 'Do it better than anybody you ever seen do it'),
+        //new Lyric('Kanye West', 'Power', 'Screams from the haters, got a nice ring to it'),
+        //new Lyric('', '', 'I guess every superhero need his theme music')
     ]);
 
     self.activeLine = ko.observable(0);
@@ -70,6 +70,7 @@ function AppViewModel() {
     };
 
     self.deleteLine = function(index, data, event) {
+        if (self.lines().length == 1) return;
         self.lines.splice(index, 1);
         if (self.activeLine() >= self.lines().length) {
             self.changeActiveLine(self.lines().length - 1);
