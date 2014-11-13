@@ -3,6 +3,11 @@ var Lyric = function(artist, song, line) {
     self.artist = ko.observable(artist);
     self.song = ko.observable(song);
     self.line = ko.observable(line);
+
+    self.isUnoriginal = ko.computed(function() {
+        return self.artist().length > 0;
+    });
+
     // have to use JSON objects here instead of Lyric() to prevent infinite loop
     self.alternateLines = ko.observableArray([
         {artist: 'Kanye West', song: 'Power', line: 'I\'m Livin in that 21st Century, doing something mean to it' },
@@ -52,6 +57,14 @@ function AppViewModel() {
         //new Lyric('', '', 'I guess every superhero need his theme music')
     ]);
 
+    self.statsOriginalLines = ko.computed(function(){
+        var count = 0;
+        $.each(self.lines(), function(index, line){
+            if(!line.isUnoriginal()) count++;
+        })
+        return count;
+    });
+
     self.activeLine = ko.observable(0);
 
     self.newLine = function(index, data, event) {
@@ -67,8 +80,12 @@ function AppViewModel() {
     };
 
     self.generateLine = function(index, data, event) {
-        self.lines.splice(index+1, 0, new Lyric('Kanye West', 'Power', 'No one man should have all that power'));
-        self.changeActiveLine(index+1, data, event);
+        if (self.lines()[index].line().length == 0) {
+            self.lines.splice(index, 1, new Lyric('Kanye West', 'Power', 'No one man should have all that power'));
+        } else {
+            self.lines.splice(index+1, 0, new Lyric('Kanye West', 'Power', 'No one man should have all that power'));
+            self.changeActiveLine(index+1, data, event);
+        }
     };
 
     self.deleteLine = function(index, data, event) {
@@ -78,6 +95,22 @@ function AppViewModel() {
             self.changeActiveLine(self.lines().length - 1);
         }
     };
+};
+
+ko.bindingHandlers.attrIf = {
+    update: function (element, valueAccessor, allBindingsAccessor) {
+        var h = ko.utils.unwrapObservable(valueAccessor());
+        var show = ko.utils.unwrapObservable(h._if);
+        if (show) {
+            ko.bindingHandlers.attr.update(element, valueAccessor, allBindingsAccessor);
+        } else {
+            for (var k in h) {
+                if (h.hasOwnProperty(k) && k.indexOf("_") !== 0) {
+                    $(element).removeAttr(k);
+                }
+            }
+        }
+    }
 };
 
 ko.applyBindings(new AppViewModel());

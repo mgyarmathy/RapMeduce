@@ -47,22 +47,40 @@ button {
   line-height: 150%;
 }
 
+.line input:focus {
+  font-style: italic;
+}
+
 .line p {
   width: 80%;
   text-indent: -2em;
   padding-left: 2em;
+  cursor: pointer;
+}
+
+.line .unoriginal {
+  color: #AD8B32;
 }
 
 
 /*http://www.colourlovers.com/palette/254301/[Chic]_-_Mellow*/
 .generate-line-button {
   background-color: #539856;
-  xbackground-color: #222;
+  background-color: #222;
+  background-color: #AD8B32;
 }
 
 .delete-line-button {
   background-color: #F24E4E;
+  background-color: #222;
   height: 20px;
+}
+
+.app-heading {
+  text-align: center;
+  margin-bottom: 45px;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 20px
 }
 
 h1,h2,h3 {
@@ -83,7 +101,7 @@ h3 {
 
 hr {
   width: 40%;
-  margin: 25px auto;
+  margin: 45px auto;
   border: 0;
   background-color: #ccc;
   height: 1px;
@@ -102,4 +120,17 @@ hr {
 .action-button-container {
   display: inline-block;
   margin-left: 10px;
+}
+
+.ui-tooltip-content{
+  font-size: 12px;
+}
+
+.stats-container {
+  font-size: 14px;
+}
+
+.stat {
+  font-size: 20px;
+  padding-right: 5px;
 }
