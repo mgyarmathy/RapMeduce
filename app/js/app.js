@@ -80,6 +80,10 @@ function AppViewModel() {
     };
 
     self.generateLine = function(index, data, event) {
+        tail_word = self.lines()[index].line().match(/\w+/g).pop();
+        $.get('/generateLines/'+tail_word, function(data) {
+            console.log(data);
+        });
         if (self.lines()[index].line().length == 0) {
             self.lines.splice(index, 1, new Lyric('Kanye West', 'Power', 'No one man should have all that power'));
         } else {

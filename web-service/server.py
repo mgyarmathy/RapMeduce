@@ -1,13 +1,10 @@
 #!flask/bin/python
 import flask
-from flask import Flask
-from flask import Response
-from flask import render_template
+from flask import Flask, Response, render_template
 from flask.ext.pymongo import PyMongo
-import json
-from bson.json_util import dumps
 import os
-import urllib2
+import requests
+from bson.json_util import dumps
 
 app = Flask('rapMeduceTest', static_folder='../app', template_folder='../app')
 mongo = PyMongo(app)
@@ -18,10 +15,15 @@ def index():
 
 @app.route('/generateLines/<tail_word>', methods=['GET'])
 def generateLines(tail_word):
-    rhyme_words = urllib2.urlopen("http://rhymebrain.com/talk?function=getRhymes&word="+tail_word).read()
+    response = requests.get("http://rhymebrain.com/talk?function=getRhymes&word="+tail_word)
+    rhymes = [line for line in response.json() if line['score'] == 300]
+    result = []
+    for word in rhymes:
+        result.append(word['word'])
+    return ', '.join(result)
     # cursor = mongo.db.testData.find()
     # return dumps(cursor)
-    return Response(rhyme_words, mimetype='application/json')
+    # return Response(rhyme_words, mimetype='application/json')
 
 @app.route('/js/<path:path>')
 def static_js(path):
