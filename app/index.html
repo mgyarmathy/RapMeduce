@@ -7,6 +7,21 @@
     <link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
 </head>
 <body>
+    <div id="loading" style="display:none">
+        <div id="bars">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="caption">Generating Lyrics</div>
+        </div>
+    </div>
     <h3 class="app-heading">RapMeduce</h3>
     <div class="wrapper">
     <!-- might use this in the future: http://knockoutjs.com/documentation/hasfocus-binding.html -->
@@ -22,8 +37,8 @@
     </h2>
     <div class="lines-container" data-bind="foreach: lines">
         <div class="line">
+            <button class="lyric-info-button" data-bind="visible:  isUnoriginal(), attrIf: {title: 'inspired by: ' + artist() + ' - ' + song(), _if: isUnoriginal()}"><span class="entypo-note-beamed"></span></button>
             <p data-bind="text: line,
-            attrIf: {title: 'inspired by: ' + artist() + ' - ' + song(), _if: isUnoriginal()},
             css: { 'unoriginal': isUnoriginal()},
             visible: $index() != $root.activeLine(),
             click: function(data, event) {
@@ -59,7 +74,7 @@
                 <button title="Generate Line" class="generate-line-button" data-bind="click: function(data, event) {
                     $root.generateLine($index(), data, event);
                 }"><span class="entypo-list-add"></span></button>
-                <button title="Delete Line" class="delete-line-button"  data-bind="visible: $root.lines().length > 1,
+                <button title="Delete Line" class="delete-line-button" data-bind="visible: $root.lines().length > 1,
                 click: function(data, event) {
                     $root.deleteLine($index(), data, event);
                 }"><span class="entypo-erase"></span></button>
@@ -80,8 +95,8 @@
 </div>
 
     <!-- debug -->
-    <!-- <h3>Knockout ViewModel</h3>
-    <pre data-bind="text: ko.toJSON($data, null, 2)"></pre> -->
+    <h3>Knockout ViewModel</h3>
+    <pre data-bind="text: ko.toJSON($data, null, 2)"></pre>
 
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>

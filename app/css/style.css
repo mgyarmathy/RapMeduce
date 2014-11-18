@@ -1,13 +1,6 @@
 @import url(http://fonts.googleapis.com/css?family=Nixie+One|Lato);
 @import url(http://weloveiconfonts.com/api/?family=entypo);
 
-/* entypo */
-[class*="entypo-"]:before {
-  font-family: 'entypo', sans-serif;
-  color: white;
-  font-size: 16px;
-}
-
 body {
   margin: 0;
 }
@@ -15,6 +8,30 @@ body {
 body, input {
   font-family: 'Lato', sans-serif;
   color: #222;
+}
+
+h1,h2,h3 {
+  font-family: 'Nixie One', cursive;
+}
+
+h1 {
+  font-size: 36px;
+}
+
+h2 {
+  font-size: 24px;
+}
+
+h3 {
+  font-size: 20px;
+}
+
+hr {
+  width: 40%;
+  margin: 45px auto;
+  border: 0;
+  background-color: #ccc;
+  height: 1px;
 }
 
 input {
@@ -44,11 +61,10 @@ button {
 .line input {
   width: 80%;
   font-size: 18px;
-  line-height: 150%;
-}
-
-.line input:focus {
+  line-height: 100%;
+  margin: 5px 0;
   font-style: italic;
+  z-index: 0;
 }
 
 .line p {
@@ -56,24 +72,31 @@ button {
   text-indent: -2em;
   padding-left: 2em;
   cursor: pointer;
+  display: inline-block;
+  margin: 6px 0;
+  line-height: 150%;
 }
 
 .line .unoriginal {
   color: #AD8B32;
 }
 
-
-/*http://www.colourlovers.com/palette/254301/[Chic]_-_Mellow*/
 .generate-line-button {
-  background-color: #539856;
-  background-color: #222;
   background-color: #AD8B32;
 }
 
 .delete-line-button {
-  background-color: #F24E4E;
   background-color: #222;
   height: 20px;
+}
+
+.lyric-info-button {
+  background-color: #FFF;
+  margin-left: -32px;
+}
+
+.lyric-info-button span:before {
+  color: #222 !important;
 }
 
 .app-heading {
@@ -81,30 +104,6 @@ button {
   margin-bottom: 45px;
   border-bottom: 1px solid #ccc;
   padding-bottom: 20px
-}
-
-h1,h2,h3 {
-  font-family: 'Nixie One', cursive;
-}
-
-h1 {
-  font-size: 36px;
-}
-
-h2 {
-  font-size: 24px;
-}
-
-h3 {
-  font-size: 20px;
-}
-
-hr {
-  width: 40%;
-  margin: 45px auto;
-  border: 0;
-  background-color: #ccc;
-  height: 1px;
 }
 
 .wrapper {
@@ -134,3 +133,90 @@ hr {
   font-size: 20px;
   padding-right: 5px;
 }
+
+
+#loading {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  background: #000;
+  opacity: 0.8;
+  filter: alpha(opacity=80);
+  z-index: 10;
+}
+
+/* entypo icons */
+
+[class*="entypo-"]:before {
+  font-family: 'entypo', sans-serif;
+  color: white;
+  font-size: 16px;
+}
+
+/* loading animation: http://codepen.io/elalemanyo/pen/wueft */
+
+#bars {
+  height: 30px;
+  left: 50%;
+  margin: -30px 0 0 -20px;
+  position: absolute;
+  top: 50%;
+  width: 40px;
+}
+
+.bar {
+  background: #fff;
+  background: #AD8B32;
+  bottom: 1px;
+  height: 3px;
+  position: absolute;
+  width: 3px;      
+  -webkit-animation: sound 0ms -800ms linear infinite alternate;
+  animation: sound 0ms -800ms linear infinite alternate;
+}
+
+#bars .caption {
+  font-family: 'Lato';
+  text-transform: uppercase;
+  font-size: 10px;
+  color: white;
+  color: #AD8B32;
+  width: 200px;
+  margin-top: 31px; 
+  margin-left: -27px
+}
+
+@-webkit-keyframes sound {
+  0% {
+    opacity: .35;
+    height: 3px; 
+  }
+  100% {
+    opacity: 1;       
+    height: 28px;        
+  }
+}
+
+@keyframes sound {
+  0% {
+    opacity: .35;
+    height: 3px; 
+  }
+  100% {
+    opacity: 1;       
+    height: 28px;        
+  }
+}
+
+.bar:nth-child(1)  { left: 1px; -webkit-animation-duration: 474ms; animation-duration: 474ms; }
+.bar:nth-child(2)  { left: 5px; -webkit-animation-duration: 433ms; animation-duration: 433ms; }
+.bar:nth-child(3)  { left: 9px; -webkit-animation-duration: 407ms; animation-duration: 407ms; }
+.bar:nth-child(4)  { left: 13px; -webkit-animation-duration: 458ms; animation-duration: 458ms; }
+.bar:nth-child(5)  { left: 17px; -webkit-animation-duration: 400ms; animation-duration: 400ms; }
+.bar:nth-child(6)  { left: 21px; -webkit-animation-duration: 427ms; animation-duration: 427ms; }
+.bar:nth-child(7)  { left: 25px; -webkit-animation-duration: 441ms; animation-duration: 441ms; }
+.bar:nth-child(8)  { left: 29px; -webkit-animation-duration: 419ms; animation-duration: 419ms; }
+.bar:nth-child(9)  { left: 33px; -webkit-animation-duration: 487ms; animation-duration: 487ms; }
+.bar:nth-child(10) { left: 37px; -webkit-animation-duration: 442ms; animation-duration: 442ms; }​

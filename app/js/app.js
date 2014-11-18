@@ -1,4 +1,4 @@
-var Lyric = function(artist, song, line) {
+var Lyric = function(artist, song, line, altLines) {
     var self = this;
     self.artist = ko.observable(artist);
     self.song = ko.observable(song);
@@ -9,14 +9,10 @@ var Lyric = function(artist, song, line) {
     });
 
     // have to use JSON objects here instead of Lyric() to prevent infinite loop
-    self.alternateLines = ko.observableArray([
-        {artist: 'Kanye West', song: 'Power', line: 'I\'m Livin in that 21st Century, doing something mean to it' },
-        {artist: 'Kanye West', song: 'Power', line: 'Do it better than anybody you ever seen do it'},
-        {artist: 'Kanye West', song: 'Power', line: 'Screams from the haters, got a nice ring to it'},
-        {artist: 'Kanye West', song: 'Power', line: 'I guess every superhero need his theme music'},
-    ]);
+    self.alternateLines = ko.observableArray(altLines);
 
     self.alternateLineUp = function(data, event) {
+        if (self.alternateLines().length == 0) return;
         $(event.target).removeClass('animated fadeInUp fadeInDown');
         setTimeout(function() {
             self.alternateLines().push({artist: self.artist(), song: self.song(), line: self.line()})
@@ -25,10 +21,11 @@ var Lyric = function(artist, song, line) {
             self.song(lyric.song);
             self.line(lyric.line);
             $(event.target).addClass('animated fadeInUp');
-        },10);
+        },1);
     };
 
     self.alternateLineDown = function(data, event) {
+        if (self.alternateLines().length == 0) return;
         $(event.target).removeClass('animated fadeInUp fadeInDown');
         setTimeout(function() {
             self.alternateLines().unshift({artist: self.artist(), song: self.song(), line: self.line()});
@@ -37,7 +34,7 @@ var Lyric = function(artist, song, line) {
             self.song(lyric.song);
             self.line(lyric.line);
             $(event.target).addClass('animated fadeInDown');
-        },10);
+        },1);
     };
 }
 
@@ -51,10 +48,7 @@ function AppViewModel() {
     self.songArtistEditable = ko.observable(false);
 
     self.lines = ko.observableArray([
-        new Lyric('', '', 'I\'m Livin in that 21st Century, doing something mean to it'),
-        //new Lyric('Kanye West', 'Power', 'Do it better than anybody you ever seen do it'),
-        //new Lyric('Kanye West', 'Power', 'Screams from the haters, got a nice ring to it'),
-        //new Lyric('', '', 'I guess every superhero need his theme music')
+        new Lyric('', '', 'Write your lyrics here, yo!', []),
     ]);
 
     self.statsOriginalLines = ko.computed(function(){
@@ -80,16 +74,19 @@ function AppViewModel() {
     };
 
     self.generateLine = function(index, data, event) {
-        tail_word = self.lines()[index].line().match(/\w+/g).pop();
-        $.get('/generateLines/'+tail_word, function(data) {
-            console.log(data);
+        $('#loading').fadeIn();
+        $.get('/generateLines/'+escape(self.lines()[index].line()), function(result) {
+            console.log(result);
+            lyric = result.shift();
+            if (self.lines()[index].line().length == 0) {
+                self.lines.splice(index, 1, new Lyric(lyric.artist, lyric.song, lyric.line, result));
+            } else {
+                self.lines.splice(index+1, 0, new Lyric(lyric.artist, lyric.song, lyric.line, result));
+                self.changeActiveLine(index+1, data, event);
+            }
+            $('#loading').fadeOut();
         });
-        if (self.lines()[index].line().length == 0) {
-            self.lines.splice(index, 1, new Lyric('Kanye West', 'Power', 'No one man should have all that power'));
-        } else {
-            self.lines.splice(index+1, 0, new Lyric('Kanye West', 'Power', 'No one man should have all that power'));
-            self.changeActiveLine(index+1, data, event);
-        }
+        
     };
 
     self.deleteLine = function(index, data, event) {
