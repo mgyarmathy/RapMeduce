@@ -36,7 +36,7 @@
         blur: function(data,event) { if(event.target.value.length > 0) songArtist(event.target.value); songArtistEditable(false); } }"/>
     </h2>
     <div class="lines-container" data-bind="foreach: lines">
-        <div class="line">
+        <div class="line">  
             <button class="lyric-info-button" data-bind="visible:  isUnoriginal(), attrIf: {title: 'inspired by: ' + artist() + ' - ' + song(), _if: isUnoriginal()}"><span class="entypo-note-beamed"></span></button>
             <p data-bind="text: line,
             css: { 'unoriginal': isUnoriginal()},
@@ -95,8 +95,8 @@
 </div>
 
     <!-- debug -->
-    <h3>Knockout ViewModel</h3>
-    <pre data-bind="text: ko.toJSON($data, null, 2)"></pre>
+    <!-- <h3>Knockout ViewModel</h3>
+    <pre data-bind="text: ko.toJSON($data, null, 2)"></pre> -->
 
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
