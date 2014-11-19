@@ -34,6 +34,7 @@ def score(user_line, rhyme_line, rhyme_line_syllables, freq):
     for token in tokenize(user_line):
         user_line_syllables += CountSyllables(token)
 
+    # to be replaced with another similarity metric
     similarity = jaccard_similarity(user_line_tokens, rhyme_line_tokens)
 
     return (_sim*similarity) + (_f*(1.0/(float(freq)/34))) + (_syl*(1/float(abs(rhyme_line_syllables-user_line_syllables) + 0.01)))
