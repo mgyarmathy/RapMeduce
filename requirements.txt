@@ -1,7 +1,3 @@
 Flask-PyMongo
-simplejson
 stemming
-random
-os
-re
 requests

@@ -29,7 +29,10 @@ def generateLines(line):
     count = 0
     # for word in rhymes:
     # TODO: remove this bottleneck
-    for word in random.sample(rhymes, 15):
+    sample_size = 15
+    if len(rhymes) < 15:
+        sample_size = len(rhymes)
+    for word in random.sample(rhymes, sample_size):
         # get all lines in db that match tail word
         # TODO: remove or increase query limit
         cursor = mongo.db.lyrics.find({'tail_word': word['word']}).limit(10)

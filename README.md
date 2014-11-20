@@ -10,7 +10,7 @@ Install pip dependencies:
 
 Download MongoDB export file (this might take a while):
 
-`curl aws.amazon.com/rap-meduce/lyrics-export.json -o lyrics-export.json`
+`curl https://s3-us-west-2.amazonaws.com/rap-meduce/lyrics-export.json -o lyrics-export.json`
 
 Import the MongoDB database:
 
