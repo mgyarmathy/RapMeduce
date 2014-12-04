@@ -5,11 +5,14 @@ from flask.ext.pymongo import PyMongo
 import os
 import requests
 import re
+from ast import literal_eval
+import json
 import random
 import RhymeScore
 from bson.json_util import dumps
 
-app = Flask('rapMeduce', static_folder='../app', template_folder='../app')
+# app = Flask('rapMeduce', static_folder='../app', template_folder='../app')
+app = Flask('rapMeduceInvertedIndex', static_folder='../app', template_folder='../app')
 mongo = PyMongo(app)
 
 @app.route('/')
@@ -27,20 +30,22 @@ def generateLines(line):
     rhymes = [word for word in response.json() if word['score'] == 300]
     rhyming_lines = []
     count = 0
-    # for word in rhymes:
-    # TODO: remove this bottleneck
-    sample_size = 15
-    if len(rhymes) < 15:
-        sample_size = len(rhymes)
-    for word in random.sample(rhymes, sample_size):
+    for word in rhymes:
         # get all lines in db that match tail word
-        # TODO: remove or increase query limit
-        cursor = mongo.db.lyrics.find({'tail_word': word['word']}).limit(10)
-        # iterate through cursor and append each rhyme to rhyming_lines
-        for rhyme in cursor:
-            rhyme['score'] = RhymeScore.score(line, rhyme['line'], rhyme['syllables'], word['freq'])
-            rhyming_lines.append(rhyme)
+        lyrics = mongo.db.lyrics.find_one({'tail_word': word['word']})
+        if (lyrics is not None):
+            for lyric in lyrics['lines'].split('##'):
+                try:
+                    rhyme = literal_eval(lyric)
+                    rhyme['artist'] = rhyme['artist'].replace('\\u2019', "'")
+                    rhyme['song'] = rhyme['song'].replace('\\u2019', "'")
+                    rhyme['line'] = rhyme['line'].replace('\\u2019', "'")
+                    rhyme['score'] = RhymeScore.score(line, rhyme['line'], rhyme['syllables'], word['freq'])
+                    rhyming_lines.append(rhyme)
+                except (SyntaxError):
+                    pass
     top_rhymes = sorted(rhyming_lines, key=lambda k: k['score'], reverse=True)[:10] 
+    print top_rhymes
     return Response(dumps(top_rhymes), mimetype='application/json')
 
 @app.route('/js/<path:path>')
