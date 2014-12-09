@@ -41,6 +41,27 @@ var Lyric = function(artist, song, line, altLines) {
 function AppViewModel() {
     var self = this;
 
+    self.lineSimilarityParam = ko.observable(600);
+    self.rhymeWordFrequencyParam = ko.observable(100);
+    self.syllableCountParam = ko.observable(300);
+
+    $('#similarity').rangeslider({
+        polyfill:false, 
+        onSlide: function(position, value) { self.lineSimilarityParam(value)},
+    });
+    $('#freq').rangeslider({
+        polyfill:false, 
+        fillClass: 'rangeslider__fill_2',
+        onSlide: function(position, value) { self.rhymeWordFrequencyParam(value)},
+    });
+    $('#syllables').rangeslider({
+        polyfill:false, 
+        fillClass: 'rangeslider__fill_3',
+        onSlide: function(position, value) { self.syllableCountParam(value)},
+    });
+
+    
+
     self.songName = ko.observable('[Song Name]');
     self.songArtist = ko.observable('[Song Artist]');
 
@@ -75,14 +96,20 @@ function AppViewModel() {
 
     self.generateLine = function(index, data, event) {
         $('#loading').fadeIn();
-        $.get('/generateLines/'+escape(self.lines()[index].line()), function(result) {
+        var url = '/generateLines/'+escape(self.lines()[index].line())
+            +'/'+escape(self.lineSimilarityParam())
+            +'/'+escape(self.rhymeWordFrequencyParam())
+            +'/'+escape(self.syllableCountParam());
+        $.get(url, function(result) {
             console.log(result);
-            lyric = result.shift();
-            if (self.lines()[index].line().length == 0) {
-                self.lines.splice(index, 1, new Lyric(lyric.artist, lyric.song, lyric.line, result));
-            } else {
-                self.lines.splice(index+1, 0, new Lyric(lyric.artist, lyric.song, lyric.line, result));
-                self.changeActiveLine(index+1, data, event);
+            if (result.length > 0) {
+                lyric = result.shift();
+                if (self.lines()[index].line().length == 0) {
+                    self.lines.splice(index, 1, new Lyric(lyric.artist, lyric.song, lyric.line, result));
+                } else {
+                    self.lines.splice(index+1, 0, new Lyric(lyric.artist, lyric.song, lyric.line, result));
+                    self.changeActiveLine(index+1, data, event);
+                }
             }
             $('#loading').fadeOut();
         });

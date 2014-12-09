@@ -4,9 +4,11 @@
     <title>RapMeduce</title>
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <link rel="stylesheet" type="text/css" href="css/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="css/rangeslider.css">
     <link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
 </head>
 <body>
+
     <div id="loading" style="display:none">
         <div id="bars">
             <div class="bar"></div>
@@ -84,31 +86,44 @@
     </div>
     <hr/>
     <div class="stats-container">
-        <h3>Stats:</h3>
-        <p>
-            <span class="stat" data-bind="text: lines().length"></span> line<span data-bind="if:lines().length>1">s</span>
-        </p>
-        <p>
-            <span class="stat" data-bind="text: (statsOriginalLines()/lines().length * 100.0).toFixed(2) + '%'"></span> original lines
-        </p>
+        <div style="display: inline-block; width: 49%; vertical-align:top;">
+            <h3>Stats:</h3>
+            <p>
+                <span class="stat" data-bind="text: lines().length"></span> line<span data-bind="if:lines().length>1">s</span>
+            </p>
+            <p>
+                <span class="stat" data-bind="text: (statsOriginalLines()/lines().length * 100.0).toFixed(2) + '%'"></span> original lines
+            </p>
+        </div>
+        <div style="display: inline-block; width: 49%; vertical-align: top;">
+            <h3>Tweak Scoring Function Parameters:</h3>
+            <label class="generate-param-label">Line Similarity</label>
+            <input data-bind="val: lineSimilarityParam()" id="similarity" type="range" min="10" max="1000" step="10" value="600">
+            <label class="generate-param-label">Rhyme Word Frequency</label>
+            <input data-bind="value: rhymeWordFrequencyParam()" id="freq" type="range" min="10" max="1000" step="10" value="100">
+            <label class="generate-param-label">Syllable Count</label>
+            <input data-bind="value: syllableCountParam()" id="syllables" type="range" min="10" max="1000" step="10" value="300">
+        </div>
     </div>
 </div>
-
     <!-- debug -->
-    <!-- <h3>Knockout ViewModel</h3>
+   <!--  <h3>Knockout ViewModel</h3>
     <pre data-bind="text: ko.toJSON($data, null, 2)"></pre> -->
 
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+    <script src="js/rangeslider.min.js"></script>
+    
+    <script src="//cdnjs.cloudflare.com/ajax/libs/knockout/3.2.0/knockout-min.js"></script>
     <script>
         $(function() {
             $(document).tooltip({
                 track:true,
                 show:{delay: 500}
             });
+
         });
     </script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/knockout/3.2.0/knockout-min.js"></script>
     <script src="js/app.js"></script>
     
 </body>

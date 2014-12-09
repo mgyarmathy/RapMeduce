@@ -10,11 +10,11 @@ Install pip dependencies:
 
 Download MongoDB export file (this might take a while):
 
-`curl https://s3-us-west-2.amazonaws.com/rap-meduce/lyrics-export.json -o lyrics-export.json`
+`curl https://s3-us-west-2.amazonaws.com/rap-meduce/rapMeduceInvertedIndex_lyrics.json -o lyrics-export.json`
 
 Import the MongoDB database:
 
-`mongoimport --db rapMeduce --collection lyrics --file lyrics-export.json`
+`mongoimport --db rapMeduceInvertedIndex --collection lyrics --file lyrics-export.json`
 
 Run the server:
 

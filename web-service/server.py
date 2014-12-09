@@ -19,8 +19,13 @@ mongo = PyMongo(app)
 def index():
     return render_template('index.html')
 
-@app.route('/generateLines/<line>', methods=['GET'])
-def generateLines(line):
+@app.route('/generateLines/<line>/<int:sim>/<int:freq>/<int:syl>', methods=['GET'])
+def generateLines(line, sim, freq, syl):
+    paramTotal = sim+freq+syl
+    _sim = float(sim)/float(paramTotal)
+    _f = float(freq)/float(paramTotal)
+    _syl = float(syl)/float(paramTotal)
+
     # get a list of all of the words in the user's line
     words = [i for i in re.findall("\w+'*\w*", line.lower())]
     tail_word = words[-1]
@@ -40,7 +45,7 @@ def generateLines(line):
                     rhyme['artist'] = rhyme['artist'].replace('\\u2019', "'")
                     rhyme['song'] = rhyme['song'].replace('\\u2019', "'")
                     rhyme['line'] = rhyme['line'].replace('\\u2019', "'")
-                    rhyme['score'] = RhymeScore.score(line, rhyme['line'], rhyme['syllables'], word['freq'])
+                    rhyme['score'] = RhymeScore.score(line, rhyme['line'], rhyme['syllables'], word['freq'], _sim, _f, _syl)
                     rhyming_lines.append(rhyme)
                 except (SyntaxError):
                     pass

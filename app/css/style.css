@@ -134,6 +134,11 @@ button {
   padding-right: 5px;
 }
 
+.generate-param-label {
+  position: relative;
+  top: -8px;
+}
+
 
 #loading {
   position: absolute;
